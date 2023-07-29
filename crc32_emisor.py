@@ -86,4 +86,4 @@ print("Trama codificada: " + encoded)
 # ---------------------------------------------------------------------------------------------
 # REFERENCIAS:
 # 1. Polinomio de CRC3: https://en.wikipedia.org/wiki/Cyclic_redundancy_check#CRCs_and_data_integrity
-# 2. Calculadora de CRC3 para pruebas: https://www.lammertbies.nl/comm/info/crc-calculation
+# 2. Algoritmo Explicado por Jorge Yass: https://miro.com/app/board/uXjVMy_j06Y=/

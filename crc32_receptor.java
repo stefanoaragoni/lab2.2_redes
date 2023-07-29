@@ -74,7 +74,8 @@ public class crc32_receptor {
     }
 
     public static void main(String[] args) {
-        String trama = "11010110110101101010001111101000101000";
+                      //101000000000101011100010011110001110
+        String trama = "101000000000101011100010011110001110";
         String encoded = crc32(trama);
         System.out.println("\nTrama Modificada: "+trama+"\nError: " + encoded);
     }
