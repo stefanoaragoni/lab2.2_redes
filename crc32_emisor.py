@@ -87,3 +87,4 @@ print("Trama codificada: " + encoded)
 # REFERENCIAS:
 # 1. Polinomio de CRC3: https://en.wikipedia.org/wiki/Cyclic_redundancy_check#CRCs_and_data_integrity
 # 2. Algoritmo Explicado por Jorge Yass: https://miro.com/app/board/uXjVMy_j06Y=/
+# 3. Modulo CRC32: https://www.geeksforgeeks.org/modulo-2-binary-division/
