@@ -4,11 +4,14 @@
 
 # ---------------------------------------------------------------------------------------------
 def menu():
-    print("\n---------- CRC3 EMISOR ----------\n")
+    print("\n---------- CRC32 EMISOR ----------\n")
     trama = 0
 
     while True:
         trama = input("Ingrese una trama en binario: ")
+
+        # eliminar espacios
+        trama = trama.replace(" ", "")
 
         # Revisar que la trama sea binaria (solo tenga 0s y 1s)
         if not trama.isnumeric() or not all([int(i) in [0, 1] for i in trama]):
@@ -22,7 +25,7 @@ def menu():
 
 # P(x) = x^32 + x^26 + x^23 + x^22 + x^16 + x^12 + x^11 + x^10 + x^8 + x^7 + x^5 + x^4 + x^2 + x + 1
 def crc32(trama):
-    # 11101101101110001000001100100000
+    # 111011011011100010000011001000001
     polinomio = [1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 1, 0, 0, 0, 0, 0, 1]
     SIZE = 32
     data = [int(bit) for bit in trama]  # Convert the trama to a list of integers
@@ -68,7 +71,7 @@ def crc32(trama):
             for i in range(len(polinomio)):
                 data_calc[i] ^= polinomio[i]
             
-        print("XOR RESULT","".join([str(bit) for bit in data_calc]))
+        #print("XOR RESULT","".join([str(bit) for bit in data_calc]))
 
     # Convert the result back to a string representation
     crc = "".join([str(bit) for bit in data_calc])
@@ -80,7 +83,7 @@ def crc32(trama):
 # ---------------------------------------------------------------------------------------------
 trama = menu()
 encoded = crc32(trama)
-print("Trama codificada: " + encoded)
+print("\nTrama codificada: " + encoded + "\n")
 
 
 # ---------------------------------------------------------------------------------------------

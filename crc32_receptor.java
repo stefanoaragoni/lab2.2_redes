@@ -74,9 +74,26 @@ public class crc32_receptor {
     }
 
     public static void main(String[] args) {
-                      //101000000000101011100010011110001110
-        String trama = "101000000000101011100010011110001110";
+        System.out.println("\n---------- CRC32 Receptor ----------\n");
+        
+        String trama = System.console().readLine("Trama: ");
+        trama = trama.replaceAll(" ", "");
+
         String encoded = crc32(trama);
-        System.out.println("\nTrama Modificada: "+trama+"\nError: " + encoded);
+
+        // Revisar si encoded tiene 1s, si es así, la trama está mal
+        boolean error = false;
+        for (char bit : encoded.toCharArray()) {
+            if (bit == '1') {
+                error = true;
+                break;
+            }
+        }
+
+        if (error) {
+            System.out.println("\nResultado: Error en la trama | "+ encoded +"\n");
+        } else {
+            System.out.println("\nResultado: Trama sin errores | "+ encoded +"\n");
+        }
     }
 }
