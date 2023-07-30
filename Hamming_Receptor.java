@@ -44,7 +44,7 @@ public class Hamming_Receptor {
                 correctedData.setCharAt(errorBit, (currentBit == '0') ? '1' : '0');
                 receivedData = correctedData.toString();
 
-                System.out.println("Errores Detectado en la posicion: " + errorBit + " (de derecha a izquieda comenzando por 0).");
+                System.out.println("Errores Detectado en la posicion: " + errorBit + " (de izquieda a derecha comenzando por 0).");
             }
 
             if (errorPosition == 0) {
@@ -55,7 +55,7 @@ public class Hamming_Receptor {
                 System.out.println("Trama correcta " + receivedData);
             } else {
                 System.out.println("Errores detectados en la trama.");
-                System.out.println("Se descarta la trama por errrores no corregibles.");
+                System.out.println("Se descarta la trama por errrores no corregibles. \n");
             }
         }
     }
