@@ -41,7 +41,8 @@ def crc32(trama):
     while True:
         # Se eliminan los bits no significativos
         eliminados = 0
-        while data_calc[0] == 0:
+
+        while len(data_calc)>0 and data_calc[0] == 0:
             data_calc.pop(0)
             eliminados += 1
 
