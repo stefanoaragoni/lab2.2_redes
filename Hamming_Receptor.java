@@ -5,7 +5,6 @@ public class Hamming_Receptor {
         int n = arr.length();
         int res = 0;
 
-        // Calculate parity bits again
         for (int i = 0; i < nr; i++) {
             int val = 0;
             for (int j = 1; j <= n; j++) {
@@ -16,14 +15,15 @@ public class Hamming_Receptor {
             res += val * (int) Math.pow(10, i);
         }
 
-        // Convert binary to decimal
         return Integer.parseInt(String.valueOf(res), 2);
     }
 
     public static void main(String[] args) {
         try (Scanner scanner = new Scanner(System.in)) {
-            System.out.print("Enter the received data: ");
+            System.out.println("=========== Hamming Receptor ===========");
+            System.out.print("Trama: ");
             String receivedData = scanner.nextLine();
+            receivedData = receivedData.replaceAll("\\s", "");
 
             // Determine the positions of Redundant Bits
             int m = receivedData.length();
@@ -35,28 +35,27 @@ public class Hamming_Receptor {
                 }
             }
 
-            // Calculate the error position (if any)
             int errorPosition = detectError(receivedData, r);
 
-            // Perform error correction (if errorPosition is not 0)
-            if (errorPosition != 0) {
-                // Flip the bit at the error position to correct the error
+            if (errorPosition != 0 && errorPosition <= m) {
                 StringBuilder correctedData = new StringBuilder(receivedData);
                 int errorBit = m - errorPosition;
-                correctedData.setCharAt(errorBit, correctedData.charAt(errorBit) == '0' ? '1' : '0');
+                char currentBit = receivedData.charAt(errorBit);
+                correctedData.setCharAt(errorBit, (currentBit == '0') ? '1' : '0');
                 receivedData = correctedData.toString();
+
+                System.out.println("Errores Detectado en la posicion: " + errorBit + " (de izquieda a derecha comenzando por 0).");
             }
 
-            // Print the result based on error detection and correction
             if (errorPosition == 0) {
-                System.out.println("No errors detected in the received message.");
-                System.out.println("Received data: " + receivedData);
-            } else if (errorPosition > 0) {
-                System.out.println("Errors detected in the received message.");
-                System.out.println("Discarding the received data due to errors.");
+                System.out.println("No error detectado en la trama.");
+                System.out.println("Trama " + receivedData);
+            } else if (errorPosition > 0 && errorPosition <= m) {
+                System.out.println("Error detectado y corregido en la trama.");
+                System.out.println("Trama correcta " + receivedData);
             } else {
-                System.out.println("Errors detected and corrected in the received message.");
-                System.out.println("Corrected data: " + receivedData);
+                System.out.println("Errores detectados en la trama.");
+                System.out.println("Se descarta la trama por errrores no corregibles. \n");
             }
         }
     }
