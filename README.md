@@ -21,7 +21,8 @@ git remote add origin https://github.com/20Candy/lab2_redes.git
 
    $ python nombre_del_archivo.py
 
-*Reemplaza nombre_del_archivo.py con el nombre del archivo que deseas ejecutar.
+   *Reemplaza nombre_del_archivo.py con el nombre del archivo que deseas ejecutar.
+
 
 ## Ejecución de archivos Java ☕️
 1. Asegúrate de tener Java Development Kit (JDK) instalado en tu sistema. Puedes descargarlo desde Oracle JDK o utilizar una distribución OpenJDK.
@@ -34,9 +35,10 @@ git remote add origin https://github.com/20Candy/lab2_redes.git
 
 4. Para ejecutar el archivo Java, utiliza el siguiente comando:
 
-   $java nombre_del_archivo
+   $ java nombre_del_archivo
 
-*Reemplaza nombre_del_archivo (sin la extensión .java o .class) con el nombre del archivo que deseas ejecutar.
+   *Reemplaza nombre_del_archivo (sin la extensión .java o .class) con el nombre del archivo que deseas ejecutar.
+
 
 
 
