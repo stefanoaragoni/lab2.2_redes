@@ -17,5 +17,5 @@ Java
 * **Stefano Aragoni** - *desarrollo* - [#20Candy](https://github.com/20Candy)
 * **Carol Arevalo** - *desarrollo* - [#stefanoaragoni](https://github.com/stefanoaragoni)
 
-También puedes mirar la lista de todos los [contribuyentes](https://github.com/20Candy/lab2_redes/graphs/contrib    utors) quíenes han participado en este proyecto. 
+También puedes mirar la lista de todos los [contribuyentes](https://github.com/20Candy/lab2_redes/graphs/contributors) quíenes han participado en este proyecto. 
 
