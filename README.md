@@ -9,8 +9,8 @@ git remote add origin https://github.com/20Candy/lab2_redes.git
 
 
 ## Construido con 🛠️
-Python
-Java
+- Python
+- Java
 
 ## Ejecución de archivos Python 🐍
 1. Asegúrate de tener Python instalado en tu sistema. Si aún no lo tienes, puedes descargarlo desde python.org e instalarlo.
@@ -19,7 +19,7 @@ Java
 
 3. Para ejecutar un archivo Python, utiliza el siguiente comando:
 
-$ python nombre_del_archivo.py
+   $ python nombre_del_archivo.py
 
 *Reemplaza nombre_del_archivo.py con el nombre del archivo que deseas ejecutar.
 
@@ -30,11 +30,11 @@ $ python nombre_del_archivo.py
 
 3. Compila el archivo Java utilizando el siguiente comando:
 
-$ javac nombre_del_archivo.java
+   $ javac nombre_del_archivo.java
 
 4. Para ejecutar el archivo Java, utiliza el siguiente comando:
 
- $java nombre_del_archivo
+   $java nombre_del_archivo
 
 *Reemplaza nombre_del_archivo (sin la extensión .java o .class) con el nombre del archivo que deseas ejecutar.
 
