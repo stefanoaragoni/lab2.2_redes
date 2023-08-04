@@ -48,7 +48,13 @@ class capaEnlace:
     def aplicar(self, mensaje):
         
         if self.metodo == 1:
-            return "0"
+            m = len(mensaje)
+            r = calcRedundantBits(m)
+
+            arr = posRedundantBits(mensaje, r)
+            arr = calcParityBits(arr, r)
+
+            self.message = ([arr[i:i+4] for i in range(0, len(arr), 4)])
         
         elif self.metodo == 2:
             self.message = crc32(mensaje)
