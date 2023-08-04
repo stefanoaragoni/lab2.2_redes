@@ -26,16 +26,16 @@ def calcParityBits(arr, r):
         arr = arr[:n - (2**i)] + str(val) + arr[n - (2**i) + 1:]
     return arr
 
-print("=========== Hamming Emisor ===========")
+# print("=========== Hamming Emisor ===========")
 
-data = input("Ingrese una trama en binario: ")
-data = data.strip().replace(" ", "")
+# data = input("Ingrese una trama en binario: ")
+# data = data.strip().replace(" ", "")
 
-m = len(data)
-r = calcRedundantBits(m)
+# m = len(data)
+# r = calcRedundantBits(m)
 
-arr = posRedundantBits(data, r)
+# arr = posRedundantBits(data, r)
 
-arr = calcParityBits(arr, r)
+# arr = calcParityBits(arr, r)
 
-print("Trama Codificada: " + " ".join([arr[i:i+4] for i in range(0, len(arr), 4)]))
+# print("Trama Codificada: " + " ".join([arr[i:i+4] for i in range(0, len(arr), 4)]))

@@ -2,27 +2,6 @@
 # ░▒█░░░░▒█▄▄▀░▒█░░░░░▒▀▄░▒▄▀░░░▀▀░░░▒█▀▀▀░▒█▒█▒█░▒█░░░▀▀▀▄▄░▒█░░▒█░▒█▄▄▀
 # ░▒█▄▄▀░▒█░▒█░▒█▄▄▀░█▄▄█░█▄▄░░░░░░░░▒█▄▄▄░▒█░░▒█░▄█▄░▒█▄▄▄█░▒█▄▄▄█░▒█░▒█
 
-# ---------------------------------------------------------------------------------------------
-def menu():
-    print("\n---------- CRC32 EMISOR ----------\n")
-    trama = 0
-
-    while True:
-        trama = input("Ingrese una trama en binario: ")
-
-        # eliminar espacios
-        trama = trama.replace(" ", "")
-
-        # Revisar que la trama sea binaria (solo tenga 0s y 1s)
-        if not trama.isnumeric() or not all([int(i) in [0, 1] for i in trama]):
-            print("La trama debe ser binaria (solo 0s y 1s)")
-            continue
-
-        else:
-            break
-
-    return trama
-
 # P(x) = x^32 + x^26 + x^23 + x^22 + x^16 + x^12 + x^11 + x^10 + x^8 + x^7 + x^5 + x^4 + x^2 + x + 1
 def crc32(trama):
     # 111011011011100010000011001000001
@@ -82,9 +61,9 @@ def crc32(trama):
 
 
 # ---------------------------------------------------------------------------------------------
-trama = menu()
-encoded = crc32(trama)
-print("\nTrama codificada: " + encoded + "\n")
+# trama = menu()
+# encoded = crc32(trama)
+# print("\nTrama codificada: " + encoded + "\n")
 
 
 # ---------------------------------------------------------------------------------------------
