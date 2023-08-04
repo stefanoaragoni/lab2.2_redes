@@ -1,5 +1,7 @@
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 public class crc32_receptor {
     public static String crc32(String trama) {
@@ -69,12 +71,7 @@ public class crc32_receptor {
         return crc.toString();
     }
 
-    public static void main(String[] args) {
-        System.out.println("\n---------- CRC32 Receptor ----------\n");
-        
-        String trama = System.console().readLine("Trama: ");
-        trama = trama.replaceAll(" ", "");
-
+    public static ArrayList<String> main(String trama) {
         String encoded = crc32(trama);
 
         // Revisar si encoded tiene 1s, si es así, la trama está mal
@@ -86,10 +83,18 @@ public class crc32_receptor {
             }
         }
 
+        // Eliminar los bits de paridad
+        trama = trama.substring(0, trama.length() - 32);
+
+        //Array
+        ArrayList<String> data;
+
         if (error) {
-            System.out.println("\nResultado: Error en la trama | "+ encoded +"\n");
+            data = new ArrayList<>(List.of(trama, "true", "crc32"));
         } else {
-            System.out.println("\nResultado: Trama sin errores | "+ encoded +"\n");
+            data = new ArrayList<>(List.of(trama, "false", "crc32"));
         }
+
+        return data;
     }
 }
