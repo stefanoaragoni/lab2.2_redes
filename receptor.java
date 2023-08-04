@@ -112,6 +112,7 @@ class capaPresentacion{
 
         // Convertir la trama a texto
         String texto = "";
+
         for (int i = 0; i < trama.length(); i += 8) {
             String byteString = trama.substring(i, i + 8);
             int byteInt = Integer.parseInt(byteString, 2);
@@ -145,7 +146,7 @@ class capaAplicacion{
                 System.out.println("\nTexto recibido: " + texto);
             }
             else {
-                System.out.println("-Se detecto un error en la trama recibida, pero no se pudo corregir.");
+                System.out.println("-Se detecto más de un error en la trama recibida. No se pudo corregir.");
             }
         }
         else if (metodo == "crc32"){

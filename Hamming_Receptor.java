@@ -21,28 +21,41 @@ public class Hamming_Receptor {
         return Integer.parseInt(String.valueOf(res), 2);
     }
 
-    public static String bitsParidad(String receivedData, int r){
+    public static String bitsParidad(String receivedData){
 
-        String data = "";
+        int mPlusR = receivedData.length();
+        int r = 0;
 
-        for (int i = 0; i < receivedData.length(); i++) {
-            if ((i + 1) % (Math.pow(2, r)) != 0) {
-                data += receivedData.charAt(i);
+        while (Math.pow(2, r) < mPlusR + r + 1) {
+            r++;
+        }
+
+        System.out.println("r: " + r);
+
+        int m = receivedData.length() - r;
+
+        StringBuilder data = new StringBuilder();
+        int j = 0;
+
+        for (int i = 1; i <= receivedData.length(); i++) {
+            if (i == Math.pow(2, j) && j < r) {
+                j++;
+            } else {
+                data.append(receivedData.charAt(receivedData.length() - i));
             }
         }
 
-        return data;
+        return data.reverse().toString();
     }
 
     public static ArrayList<String> main(String receivedData) {
         // Determine the positions of Redundant Bits
         int m = receivedData.length();
+
+        int mPlusR = receivedData.length();
         int r = 0;
-        for (int i = 0; i < m; i++) {
-            if (Math.pow(2, i) >= m + i + 1) {
-                r = i;
-                break;
-            }
+        while (Math.pow(2, r) < mPlusR + r + 1) {
+            r++;
         }
 
         int errorPosition = detectError(receivedData, r);
@@ -58,7 +71,7 @@ public class Hamming_Receptor {
         }
 
         // Eliminar los bits de paridad para que quede la trama original
-        receivedData = bitsParidad(receivedData, r);
+        receivedData = bitsParidad(receivedData);
         ArrayList<String> data;
 
         if (errorPosition == 0) {

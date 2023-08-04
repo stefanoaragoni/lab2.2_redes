@@ -28,6 +28,7 @@ class capaRuido:
 
     def aplicar(self, mensaje):
         new_mensaje = ""
+        print("\n--> Trama en binario (sin ruido, modificada): ", mensaje)
 
         for bit in mensaje:
             if random.random() < self.probabilidad:
@@ -54,7 +55,7 @@ class capaEnlace:
             arr = posRedundantBits(mensaje, r)
             arr = calcParityBits(arr, r)
 
-            self.message = ([arr[i:i+4] for i in range(0, len(arr), 4)])
+            self.message = ''.join(arr)
         
         elif self.metodo == 2:
             self.message = crc32(mensaje)
@@ -68,7 +69,7 @@ class capaPresentacion:
     def binario(self, mensaje):
         # Convertir texto a binario por ASCII de cada caracter.
         self.trama = "".join([bin(ord(c))[2:].zfill(8) for c in mensaje])
-        print("\nTrama en binario (sin ruido): " + self.trama + "\n")
+        print("\n--> Trama en binario (sin ruido, sin modificar): ", self.trama)
 
         return self.trama           
 
@@ -130,3 +131,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
