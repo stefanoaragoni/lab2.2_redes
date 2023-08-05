@@ -6,6 +6,10 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
 
 public class receptor {
 
@@ -139,43 +143,54 @@ class capaPresentacion{
     }
 }
 
-class capaAplicacion{
+class capaAplicacion {
 
     public static void main(ArrayList<String> data) {
-        // Data contiene texto, si se detecto / corrigio error y el metodo usado
+        String texto = data.get(0);
+        String error = data.get(1);
+        String metodo = data.get(2);
+        
+        StringBuilder logMessage = new StringBuilder();
 
-        String texto = data.toArray()[0].toString();
-        String error = data.toArray()[1].toString();
-        String metodo = data.toArray()[2].toString();
+        if (metodo.equals("hamming")) {
+            logMessage.append("\n---------------\nMetodo de correccion de errores: Hamming");
 
-        if (metodo == "hamming") {
-            System.out.println("\n---------------\nMetodo de correccion de errores: Hamming");
-
-            if (error == "true") {
-                System.out.println("-Se detecto un error en la trama recibida, se corrigio y se convirtio a texto.");
-                System.out.println("\nTexto recibido (corregido): " + texto);
+            if (error.equals("true")) {
+                logMessage.append("\n-Se detecto un error en la trama recibida, se corrigio y se convirtio a texto.");
+                logMessage.append("\nTexto recibido (corregido): ").append(texto);
+                guardarEnArchivo(metodo, "corregido");
+            } else if (error.equals("false")) {
+                logMessage.append("\n-No se detectaron errores en la trama recibida, se convirtio a texto.");
+                logMessage.append("\nTexto recibido: ").append(texto);
+                guardarEnArchivo(metodo, "clean");
+            } else {
+                logMessage.append("\n-Se detecto más de un error en la trama recibida. No se pudo corregir.");
+                guardarEnArchivo(metodo, "error");
             }
-            else if (error == "false") {
-                System.out.println("-No se detectaron errores en la trama recibida, se convirtio a texto.");
-                System.out.println("\nTexto recibido: " + texto);
-            }
-            else {
-                System.out.println("-Se detecto más de un error en la trama recibida. No se pudo corregir.");
+        } else if (metodo.equals("crc32")) {
+            logMessage.append("\n---------------\nMetodo de deteccion de errores: CRC32");
+
+            if (error.equals("true")) {
+                logMessage.append("\n-Se detecto un error en la trama recibida. Se descarto la trama");
+                guardarEnArchivo(metodo, "error");
+            } else if (error.equals("false")) {
+                logMessage.append("\n-No se detectaron errores en la trama recibida, se convirtio a texto.");
+                logMessage.append("\nTexto recibido: ").append(texto);
+                guardarEnArchivo(metodo, "clean");
             }
         }
-        else if (metodo == "crc32"){
-            System.out.println("\n---------------\nMetodo de deteccion de errores: CRC32");
 
-            if (error == "true") {
-                System.out.println("-Se detecto un error en la trama recibida. Se descarto la trama");
-            }
-            else if (error == "false") {
-                System.out.println("-No se detectaron errores en la trama recibida, se convirtio a texto.");
-                System.out.println("\nTexto recibido: " + texto);
-            }
-        }
-
+        System.out.println(logMessage);
     }
 
+    private static void guardarEnArchivo(String metodo, String estado) {
+        try {
+            BufferedWriter writer = new BufferedWriter(new FileWriter(metodo + ".txt", true));
+            writer.append(estado).append("\n");
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }
 

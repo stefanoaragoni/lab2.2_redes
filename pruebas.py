@@ -22,7 +22,8 @@ def generar_mensaje():
 
 if __name__ == "__main__":
     mensaje = generar_mensaje()
-    probabilidad = generar_numero()
+    # probabilidad = generar_numero()
+    probabilidad = 1
 
     iteraciones = int(input("Ingrese la cantidad de iteraciones: "))
     metodo = int(input("Ingrese el método deseado (1. Hamming, 2. CRC32): "))
