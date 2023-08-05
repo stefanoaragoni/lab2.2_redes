@@ -132,11 +132,13 @@ class capaPresentacion{
         String texto = "";
 
         for (int i = 0; i < trama.length(); i += 8) {
-            String byteString = trama.substring(i, i + 8);
+            int endIndex = Math.min(i + 8, trama.length());
+            String byteString = trama.substring(i, endIndex);
             int byteInt = Integer.parseInt(byteString, 2);
             char byteChar = (char) byteInt;
             texto += byteChar;
         }
+
 
         ArrayList<String> info = new ArrayList<>(List.of(texto, error, metodo));
         return info;
