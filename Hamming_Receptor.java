@@ -51,11 +51,12 @@ public class Hamming_Receptor {
     public static ArrayList<String> main(String receivedData) {
         // Determine the positions of Redundant Bits
         int m = receivedData.length();
-
-        int mPlusR = receivedData.length();
         int r = 0;
-        while (Math.pow(2, r) < mPlusR + r + 1) {
-            r++;
+        for (int i = 0; i < m; i++) {
+            if (Math.pow(2, i) >= m + i + 1) {
+                r = i;
+                break;
+            }
         }
 
         int errorPosition = detectError(receivedData, r);

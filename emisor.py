@@ -120,6 +120,7 @@ def main():
     probabilidad = float(sys.argv[3])
 
     capa_aplicacion = capaAplicacion()
+    # mensaje, metodo, probabilidad = capa_aplicacion.solicitar()
 
     if mensaje == "" and metodo == "" and probabilidad == "":
         mensaje, metodo, probabilidad = capa_aplicacion.solicitar()
