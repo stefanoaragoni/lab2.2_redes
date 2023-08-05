@@ -158,7 +158,7 @@ class capaAplicacion {
             if (error.equals("true")) {
                 logMessage.append("\n-Se detecto un error en la trama recibida, se corrigio y se convirtio a texto.");
                 logMessage.append("\nTexto recibido (corregido): ").append(texto);
-                guardarEnArchivo(metodo, "corregido");
+                guardarEnArchivo(metodo, "corrected");
             } else if (error.equals("false")) {
                 logMessage.append("\n-No se detectaron errores en la trama recibida, se convirtio a texto.");
                 logMessage.append("\nTexto recibido: ").append(texto);

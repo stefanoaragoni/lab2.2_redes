@@ -24,68 +24,81 @@ def generar_mensaje():
 
 if __name__ == "__main__":
     mensaje = generar_mensaje()
-    # probabilidad = generar_numero()
-    probabilidad = 0.0001
+    probabilities = [0.001, 0.01, 0.1]
+    methods = [1, 2]
 
     iteraciones = int(input("Ingrese la cantidad de iteraciones: "))
-    metodo = int(input("Ingrese el método deseado (1. Hamming, 2. CRC32): "))
 
-    # Delete existing files
-    if os.path.exists("hamming.txt"):
-        os.remove("hamming.txt")
-    if os.path.exists("crc32.txt"):
-        os.remove("crc32.txt")
+    for metodo in methods:
 
-    clean_counts = []
-    error_counts = []
-    corrected_counts = []
+        for probabilidad in probabilities:
+            mensaje = generar_mensaje()
 
-    for _ in range(iteraciones):
-        emisor_process = multiprocessing.Process(target=run_emisor, args=(mensaje, metodo, probabilidad))
-        receptor_process = multiprocessing.Process(target=run_receptor, args=(metodo,))
+            clean_counts_crc32 = 0
+            error_counts_crc32 = 0
+            corrected_counts_crc32 = 0
 
-        emisor_process.start()
-        receptor_process.start()
+            clean_counts_hamming = 0
+            error_counts_hamming = 0
+            corrected_counts_hamming = 0
 
-        emisor_process.join()
-        receptor_process.join()
+            for _ in range(iteraciones):
+                emisor_process = multiprocessing.Process(target=run_emisor, args=(mensaje, metodo, probabilidad))
+                receptor_process = multiprocessing.Process(target=run_receptor, args=(metodo,))
 
-    # Read and analyze the output files
-    if os.path.exists("hamming.txt"):
-        with open("hamming.txt", "r") as hamming_file:
-            lines = hamming_file.readlines()
-            clean_count = lines.count("clean\n")
-            error_count = lines.count("error\n")
-            corrected_count = lines.count("corrected\n")
-            clean_counts.append(clean_count)
-            error_counts.append(error_count)
-            corrected_counts.append(corrected_count)
-    
-    if os.path.exists("crc32.txt"):
-        with open("crc32.txt", "r") as crc32_file:
-            lines = crc32_file.readlines()
-            clean_count = lines.count("clean\n")
-            error_count = lines.count("error\n")
-            corrected_count = lines.count("corrected\n")
-            clean_counts.append(clean_count)
-            error_counts.append(error_count)
-            corrected_counts.append(corrected_count)
+                emisor_process.start()
+                receptor_process.start()
 
-    # Generate graphs
-    plt.figure(figsize=(10, 6))
-    plt.plot(clean_counts, label="Clean")
-    plt.plot(error_counts, label="Error")
-    plt.plot(corrected_counts, label="Corrected")
-    plt.xlabel("Iteration")
-    plt.ylabel("Message Count")
-    plt.title("Message Status Counts")
-    plt.legend()
+                emisor_process.join()
+                receptor_process.join()
 
-    # Set y-axis limits for better visualization
-    plt.ylim(bottom=0, top=max(max(clean_counts), max(error_counts), max(corrected_counts)) + 5)
+            # Read and analyze the output files
+            if os.path.exists("hamming.txt"):
+                with open("hamming.txt", "r") as hamming_file:
+                    lines = hamming_file.readlines()
+                    clean_count = lines.count("clean\n")
+                    error_count = lines.count("error\n")
+                    corrected_count = lines.count("corrected\n")
+                    clean_counts_hamming =+ clean_count
+                    error_counts_hamming =+ error_count
+                    corrected_counts_hamming =+ corrected_count
 
-    plt.show()
+            if os.path.exists("crc32.txt"):
+                with open("crc32.txt", "r") as crc32_file:
+                    lines = crc32_file.readlines()
+                    clean_count = lines.count("clean\n")
+                    error_count = lines.count("error\n")
+                    corrected_count = lines.count("corrected\n")
+                    clean_counts_crc32 += clean_count
+                    error_counts_crc32 += error_count
+                    corrected_counts_crc32 += corrected_count
 
-    
+            # Datos para graficar
+            labels = ['Clean', 'Error', 'Corrected']
+            hamming_counts = [clean_counts_hamming, error_counts_hamming, corrected_counts_hamming]
+            crc32_counts = [clean_counts_crc32, error_counts_crc32, corrected_counts_crc32]
 
+            x = range(len(labels))
+
+            # Crear la gráfica de barras para Hamming
+            plt.bar(x, hamming_counts, align='center')
+            plt.xlabel('Result Type')
+            plt.ylabel('Count')
+            plt.title('Hamming Result Counts')
+            plt.xticks(x, labels)
+            plt.savefig('hamming_' + str(probabilidad) +'.png' )
+
+            # Crear la gráfica de barras para CRC32
+            plt.bar(x, crc32_counts, align='center')
+            plt.xlabel('Result Type')
+            plt.ylabel('Count')
+            plt.title('CRC32 Result Counts')
+            plt.xticks(x, labels)
+            plt.savefig('crc32_' + str(probabilidad) +'.png')
+
+            # borrar datos en archivos
+            if os.path.exists("hamming.txt"):
+                os.remove("hamming.txt")
+            if os.path.exists("crc32.txt"):
+                os.remove("crc32.txt")
 
