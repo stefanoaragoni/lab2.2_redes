@@ -59,6 +59,7 @@ if __name__ == "__main__":
                 emisor_process.join()
                 receptor_process.join()
 
+                time.sleep(2)
                 with open("resultados.txt", "r") as file:
 
                     # Se lee el resultado del receptor
