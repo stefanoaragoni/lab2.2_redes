@@ -11,10 +11,17 @@ public class receptor {
 
     public static void main(String[] args) {
 
+        String metodo = "";
+
+        if (args.length > 0) {
+            metodo = args[0];
+        }
+
+
         Set<String> receivedData = capaTransmision.main();
 
         for (String data : receivedData) {
-            ArrayList<String> arrayEnlace = capaEnlace.main(data);
+            ArrayList<String> arrayEnlace = capaEnlace.main(data, metodo);
             
             ArrayList<String> arrayPresentacion = capaPresentacion.main(arrayEnlace);
 
@@ -63,7 +70,7 @@ class capaTransmision{
 
 class capaEnlace{
 
-    public static ArrayList<String> main(String data) {
+    public static ArrayList<String> main(String data, String metodo) {
 
         // Preguntar qué metodo de detección de errores se usará
         // 1. Hamming
@@ -71,20 +78,27 @@ class capaEnlace{
 
         int opcion;
 
-        System.out.println("\nElija el metodo de deteccion de errores:");
-        System.out.println("1. Hamming");
-        System.out.println("2. CRC32");
+        if (metodo.isEmpty()) {
+            System.out.println("\nElija el metodo de deteccion de errores:");
+            System.out.println("1. Hamming");
+            System.out.println("2. CRC32");
 
-        while (true) {
-            try {
-                opcion = Integer.parseInt(System.console().readLine("Opcion: "));
-                if (opcion == 1 || opcion == 2) {
-                    break;
+            while (true) {
+                try {
+                    opcion = Integer.parseInt(System.console().readLine("Opcion: "));
+                    if (opcion == 1 || opcion == 2) {
+                        break;
+                    }
+                } catch (NumberFormatException e) {
+                    System.out.println("Opcion invalida.");
                 }
-            } catch (NumberFormatException e) {
-                System.out.println("Opcion invalida.");
             }
-        }
+        
+        } else{
+            opcion = Integer.parseInt(metodo);
+
+        }   
+
 
         if (opcion == 1) {
             ArrayList<String> hamming = Hamming_Receptor.main(data);

@@ -2,6 +2,7 @@ import random
 import socket
 from crc32_emisor import crc32
 from Hamming_Emisor import calcRedundantBits, posRedundantBits, calcParityBits
+import sys
 
 class CapaTransmision:
     def __init__(self):
@@ -113,8 +114,15 @@ class capaAplicacion:
 
 
 def main():
+
+    mensaje = sys.argv[1]
+    metodo = int(sys.argv[2])
+    probabilidad = float(sys.argv[3])
+
     capa_aplicacion = capaAplicacion()
-    mensaje, metodo, probabilidad = capa_aplicacion.solicitar()
+
+    if mensaje == "" and metodo == "" and probabilidad == "":
+        mensaje, metodo, probabilidad = capa_aplicacion.solicitar()
 
     capa_presentacion = capaPresentacion()
     trama = capa_presentacion.binario(mensaje)
