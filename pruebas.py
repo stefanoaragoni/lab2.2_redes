@@ -4,6 +4,7 @@ import random
 from faker import Faker
 import os
 import matplotlib.pyplot as plt
+import time
 
 def run_emisor(mensaje, metodo, probabilidad):
     subprocess.run(["python", "emisor.py", mensaje, str(metodo), str(probabilidad)])
@@ -47,14 +48,16 @@ if __name__ == "__main__":
             x = range(len(labels))
 
             for _ in range(iteraciones):
-                emisor_process = multiprocessing.Process(target=run_emisor, args=(mensaje, metodo, probabilidad))
-                receptor_process = multiprocessing.Process(target=run_receptor, args=(metodo,))
 
-                emisor_process.start()
+                receptor_process = multiprocessing.Process(target=run_receptor, args=(metodo,))
                 receptor_process.start()
+                
+                emisor_process = multiprocessing.Process(target=run_emisor, args=(mensaje, metodo, probabilidad))
+                emisor_process.start()
 
                 emisor_process.join()
                 receptor_process.join()
+                
 
             # Read and analyze the output files
             if os.path.exists("hamming.txt"):
@@ -104,11 +107,3 @@ if __name__ == "__main__":
                 plt.xticks(x, labels)
                 plt.savefig('crc32_' + str(probabilidad) +'.png' )
                 plt.clf()
-
-
-            # borrar datos en archivos
-            if os.path.exists("hamming.txt"):
-                os.remove("hamming.txt")
-            if os.path.exists("crc32.txt"):
-                os.remove("crc32.txt")
-
