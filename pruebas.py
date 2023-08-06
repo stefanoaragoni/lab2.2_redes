@@ -75,15 +75,6 @@ if __name__ == "__main__":
                 with open("hamming.txt", "w") as hamming_file:
                     hamming_file.truncate(0)
 
-                # Crear la gráfica de barras para Hamming
-                plt.bar(x, hamming_counts, align='center')
-                plt.xlabel('Result Type')
-                plt.ylabel('Count')
-                plt.title('Hamming Result Counts')
-                plt.xticks(x, labels)
-                plt.savefig('hamming_' + str(probabilidad) +'.png' )
-                plt.clf()
-
             if os.path.exists("crc32.txt"):
                 with open("crc32.txt", "r") as crc32_file:
                     lines = crc32_file.readlines()
@@ -99,11 +90,26 @@ if __name__ == "__main__":
                 with open("crc32.txt", "w") as crc32_file:
                     crc32_file.truncate(0)
 
-                # Crear la gráfica de barras para Hamming
+            
+            if metodo == 1:
+                # Gráfica de Hamming
+                hamming_counts = [clean_counts_hamming, error_counts_hamming, corrected_counts_hamming]
+                plt.bar(x, hamming_counts, align='center')
+                plt.xlabel('Result Type')
+                plt.ylabel('Count')
+                plt.title('Hamming Result Counts')
+                plt.xticks(x, labels)
+                plt.savefig('hamming_' + str(probabilidad) + '.png')
+                plt.clf()
+
+            else:
+
+                # Gráfica de CRC32
+                crc32_counts = [clean_counts_crc32, error_counts_crc32, corrected_counts_crc32]
                 plt.bar(x, crc32_counts, align='center')
                 plt.xlabel('Result Type')
                 plt.ylabel('Count')
                 plt.title('CRC32 Result Counts')
                 plt.xticks(x, labels)
-                plt.savefig('crc32_' + str(probabilidad) +'.png' )
+                plt.savefig('crc32_' + str(probabilidad) + '.png')
                 plt.clf()
