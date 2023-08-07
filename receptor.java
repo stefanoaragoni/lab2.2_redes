@@ -152,43 +152,41 @@ class capaAplicacion {
         
         StringBuilder logMessage = new StringBuilder();
 
-
-        if (metodo.equals("hamming")) {
+    if (metodo.equals("hamming")) {
             logMessage.append("\n---------------\nMetodo de correccion de errores: Hamming");
 
             if (error.equals("true")) {
                 logMessage.append("\n-Se detecto un error en la trama recibida, se corrigio y se convirtio a texto.");
                 logMessage.append("\nTexto recibido (corregido): ").append(texto);
-                guardarEnArchivo("corrected");
-
+                guardarEnArchivo(metodo, "corrected");
             } else if (error.equals("false")) {
                 logMessage.append("\n-No se detectaron errores en la trama recibida, se convirtio a texto.");
                 logMessage.append("\nTexto recibido: ").append(texto);
-                guardarEnArchivo("clean");
+                guardarEnArchivo(metodo, "clean");
             } else {
-                logMessage.append("\n-Se detecto un error en la trama recibida. No se pudo corregir.");
-                guardarEnArchivo("error");
+                logMessage.append("\n-Se detecto más de un error en la trama recibida. No se pudo corregir.");
+                guardarEnArchivo(metodo, "error");
             }
         } else if (metodo.equals("crc32")) {
             logMessage.append("\n---------------\nMetodo de deteccion de errores: CRC32");
 
             if (error.equals("true")) {
                 logMessage.append("\n-Se detecto un error en la trama recibida. Se descarto la trama");
-                guardarEnArchivo("error");
+                guardarEnArchivo(metodo, "error");
             } else if (error.equals("false")) {
                 logMessage.append("\n-No se detectaron errores en la trama recibida, se convirtio a texto.");
                 logMessage.append("\nTexto recibido: ").append(texto);
-                guardarEnArchivo("clean");
+                guardarEnArchivo(metodo, "clean");
             }
         }
 
         System.out.println(logMessage);
     }
 
-    private static void guardarEnArchivo(String estado) {
+    private static void guardarEnArchivo(String metodo, String estado) {
         try {
-            BufferedWriter writer = new BufferedWriter(new FileWriter("resultados.txt", true));
-            writer.append(estado);
+            BufferedWriter writer = new BufferedWriter(new FileWriter(metodo + ".txt", true));
+            writer.append(estado).append("\n");
             writer.close();
         } catch (IOException e) {
             e.printStackTrace();
