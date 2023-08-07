@@ -115,12 +115,19 @@ class capaAplicacion:
 
 def main():
 
-    mensaje = sys.argv[1]
-    metodo = int(sys.argv[2])
-    probabilidad = float(sys.argv[3])
+    # if argv is not None:
+
+    if len(sys.argv) == 4:
+        mensaje = sys.argv[1]
+        metodo = int(sys.argv[2])
+        probabilidad = float(sys.argv[3])
+
+    else:
+        mensaje = ""
+        metodo = ""
+        probabilidad = ""
 
     capa_aplicacion = capaAplicacion()
-    # mensaje, metodo, probabilidad = capa_aplicacion.solicitar()
 
     if mensaje == "" and metodo == "" and probabilidad == "":
         mensaje, metodo, probabilidad = capa_aplicacion.solicitar()
