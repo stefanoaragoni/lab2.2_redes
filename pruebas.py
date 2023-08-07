@@ -1,6 +1,7 @@
 import subprocess
 import multiprocessing
 import random
+import time
 from faker import Faker
 import os
 import matplotlib.pyplot as plt
@@ -26,6 +27,8 @@ if __name__ == "__main__":
     mensajes = ["Hola como estas", "Habia una vez un lind gatito negro llamdo chimuelo"]
     probabilities = [0.001, 0.01, 0.1]
     methods = [1,2]
+
+    resultados = {'hamming':{"0.001":{"clean":0, "error":0, "corrected":0}, "0.01":{"clean":0, "error":0, "corrected":0}, "0.1":{"clean":0, "error":0, "corrected":0}}, 'crc32':{"0.001":{"clean":0, "error":0}, "0.01":{"clean":0, "error":0}, "0.1":{"clean":0, "error":0}}}
 
     iteraciones = int(input("Ingrese la cantidad de iteraciones: "))
 
