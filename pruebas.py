@@ -5,6 +5,7 @@ import time
 from faker import Faker
 import os
 import matplotlib.pyplot as plt
+import time
 
 def run_emisor(mensaje, metodo, probabilidad):
     subprocess.run(["python", "emisor.py", mensaje, str(metodo), str(probabilidad)])
@@ -22,9 +23,8 @@ def generar_mensaje():
 
     return mensaje
 
-
 if __name__ == "__main__":
-    mensaje = generar_mensaje()
+    mensajes = ["Hola como estas", "Habia una vez un lind gatito negro llamdo chimuelo"]
     probabilities = [0.001, 0.01, 0.1]
     methods = [1,2]
 
@@ -36,180 +36,83 @@ if __name__ == "__main__":
 
         for probabilidad in probabilities:
 
-            clean_counts_crc32 = 0
-            error_counts_crc32 = 0
-            corrected_counts_crc32 = 0
+            for mensaje in mensajes:
 
-            clean_counts_hamming = 0
-            error_counts_hamming = 0
-            corrected_counts_hamming = 0
+                clean_counts_crc32 = 0
+                error_counts_crc32 = 0
+                corrected_counts_crc32 = 0
 
-            # Datos para graficar
-            labels = ['Clean', 'Error', 'Corrected']
-            x = range(len(labels))
+                clean_counts_hamming = 0
+                error_counts_hamming = 0
+                corrected_counts_hamming = 0
 
-            for _ in range(iteraciones):
-                receptor_process = multiprocessing.Process(target=run_receptor, args=(metodo,))
-                receptor_process.start()
-                time.sleep(2)
+                # Datos para graficar
+                labels = ['Clean', 'Error', 'Corrected']
+                x = range(len(labels))
 
-                emisor_process = multiprocessing.Process(target=run_emisor, args=(mensaje, metodo, probabilidad))
-                emisor_process.start()
+                for _ in range(iteraciones):
 
-                emisor_process.join()
-                receptor_process.join()
+                    receptor_process = multiprocessing.Process(target=run_receptor, args=(metodo,))
+                    receptor_process.start()
+                    
+                    emisor_process = multiprocessing.Process(target=run_emisor, args=(mensaje, metodo, probabilidad))
+                    emisor_process.start()
 
-                time.sleep(2)
-                with open("resultados.txt", "r") as file:
+                    emisor_process.join()
+                    receptor_process.join()
+                    
 
-                    # Se lee el resultado del receptor
-                    resultado = file.readline()
-                   
+                # Read and analyze the output files
+                if os.path.exists("hamming.txt"):
+                    with open("hamming.txt", "r") as hamming_file:
+                        lines = hamming_file.readlines()
+                        clean_count = lines.count("clean\n")
+                        error_count = lines.count("error\n")
+                        corrected_count = lines.count("corrected\n")
+                        clean_counts_hamming =+ clean_count
+                        error_counts_hamming =+ error_count
+                        corrected_counts_hamming =+ corrected_count
 
-                    if resultado == 'corrected':
-                        if metodo == 1:
-                            if probabilidad == 0.001:
-                                resultados['hamming']['0.001']['corrected'] += 1
-                            elif probabilidad == 0.01:
-                                resultados['hamming']['0.01']['corrected'] += 1
-                            elif probabilidad == 0.1:
-                                resultados['hamming']['0.1']['corrected'] += 1
+                    hamming_counts = [clean_counts_hamming, error_counts_hamming, corrected_counts_hamming]
 
-                            corrected_counts_hamming += 1
+                    with open("hamming.txt", "w") as hamming_file:
+                        hamming_file.truncate(0)
 
-                        elif metodo == 2:
-                            if probabilidad == 0.001:
-                                resultados['crc32']['0.001']['corrected'] += 1
-                            elif probabilidad == 0.01:
-                                resultados['crc32']['0.01']['corrected'] += 1
-                            elif probabilidad == 0.1:
-                                resultados['crc32']['0.1']['corrected'] += 1
+                if os.path.exists("crc32.txt"):
+                    with open("crc32.txt", "r") as crc32_file:
+                        lines = crc32_file.readlines()
+                        clean_count = lines.count("clean\n")
+                        error_count = lines.count("error\n")
+                        corrected_count = lines.count("corrected\n")
+                        clean_counts_crc32 =+ clean_count
+                        error_counts_crc32 =+ error_count
+                        corrected_counts_crc32 =+ corrected_count
 
-                            corrected_counts_crc32 += 1
+                    crc32_counts = [clean_counts_crc32, error_counts_crc32, corrected_counts_crc32]
 
-                    elif resultado == 'error':
-                        if metodo == 1:
-                            if probabilidad == 0.001:
-                                resultados['hamming']['0.001']['error'] += 1
-                            elif probabilidad == 0.01:
-                                resultados['hamming']['0.01']['error'] += 1
-                            elif probabilidad == 0.1:
-                                resultados['hamming']['0.1']['error'] += 1
+                    with open("crc32.txt", "w") as crc32_file:
+                        crc32_file.truncate(0)
 
-                            error_counts_hamming += 1
+                
+                if metodo == 1:
+                    # Gráfica de Hamming
+                    hamming_counts = [clean_counts_hamming, error_counts_hamming, corrected_counts_hamming]
+                    plt.bar(x, hamming_counts, align='center')
+                    plt.xlabel('Result Type')
+                    plt.ylabel('Count')
+                    plt.title('Hamming con probabilidad de ' + str(probabilidad) + ' y largo de cadena '  +str(len(mensaje)))
+                    plt.xticks(x, labels)
+                    plt.savefig('hamming_' + str(probabilidad) + "_"  +str(len(mensaje)) +'.png')
+                    plt.clf()
 
-                        elif metodo == 2:
-                            if probabilidad == 0.001:
-                                resultados['crc32']['0.001']['error'] += 1
-                            elif probabilidad == 0.01:
-                                resultados['crc32']['0.01']['error'] += 1
-                            elif probabilidad == 0.1:
-                                resultados['crc32']['0.1']['error'] += 1
+                else:
 
-                            error_counts_crc32 += 1
-
-                    elif resultado == 'clean':
-                        if metodo == 1:
-                            if probabilidad == 0.001:
-                                resultados['hamming']['0.001']['clean'] += 1
-                            elif probabilidad == 0.01:
-                                resultados['hamming']['0.01']['clean'] += 1
-                            elif probabilidad == 0.1:
-                                resultados['hamming']['0.1']['clean'] += 1
-
-                            clean_counts_hamming += 1
-
-                        elif metodo == 2:
-                            if probabilidad == 0.001:
-                                resultados['crc32']['0.001']['clean'] += 1
-                            elif probabilidad == 0.01:
-                                resultados['crc32']['0.01']['clean'] += 1
-                            elif probabilidad == 0.1:
-                                resultados['crc32']['0.1']['clean'] += 1
-
-                            clean_counts_crc32 += 1
-
-                    #Borrar el archivo
-                    os.remove("resultados.txt")
-
-    print(resultados)
-
-    # Graficas CRC32
-    probabilidades = ["0.001", "0.01", "0.1"]
-    labels = ['Clean', 'Error']  # Labels para el eje x
-    x = range(len(labels))  # Valores para el eje x
-
-    clean_001 = resultados['crc32']['0.001']['clean']
-    error_001 = resultados['crc32']['0.001']['error']
-
-    clean_01 = resultados['crc32']['0.01']['clean']
-    error_01 = resultados['crc32']['0.01']['error']
-
-    clean_1 = resultados['crc32']['0.1']['clean']
-    error_1 = resultados['crc32']['0.1']['error']
-
-    plt.subplot(1, 3, 1)
-    plt.bar(x, [clean_001, error_001])
-    plt.xticks(x, labels)
-    plt.title('Probabilidad 0.001')
-
-    plt.subplot(1, 3, 2)
-    plt.bar(x, [clean_01, error_01])
-    plt.xticks(x, labels)
-    plt.title('Probabilidad 0.01')
-
-    plt.subplot(1, 3, 3)
-    plt.bar(x, [clean_1, error_1])
-    plt.xticks(x, labels)
-    plt.title('Probabilidad 0.1')
-
-    plt.suptitle('CRC32 - Mensajes:' + str(len(mensaje)))
-    plt.show()
-
-    # Guardar la grafica
-    nombre = "crc32_" + str(len(mensaje)) + ".jpg"
-    plt.savefig(nombre)
-
-
-    # Graficas Hamming
-    probabilidades = ["0.001", "0.01", "0.1"]
-    labels = ['Clean', 'Error', 'Corrected']  # Labels para el eje x
-    x = range(len(labels))  # Valores para el eje x
-
-    clean_001 = resultados['hamming']['0.001']['clean']
-    error_001 = resultados['hamming']['0.001']['error']
-    corrected_001 = resultados['hamming']['0.001']['corrected']
-
-    clean_01 = resultados['hamming']['0.01']['clean']
-    error_01 = resultados['hamming']['0.01']['error']
-    corrected_01 = resultados['hamming']['0.01']['corrected']
-
-    clean_1 = resultados['hamming']['0.1']['clean']
-    error_1 = resultados['hamming']['0.1']['error']
-    corrected_1 = resultados['hamming']['0.1']['corrected']
-
-    plt.subplot(1, 3, 1)
-    plt.bar(x, [clean_001, error_001, corrected_001])
-    plt.xticks(x, labels)
-    plt.title('Probabilidad 0.001')
-
-    plt.subplot(1, 3, 2)
-    plt.bar(x, [clean_01, error_01, corrected_01])
-    plt.xticks(x, labels)
-    plt.title('Probabilidad 0.01')
-
-    plt.subplot(1, 3, 3)
-    plt.bar(x, [clean_1, error_1, corrected_1])
-    plt.xticks(x, labels)
-    plt.title('Probabilidad 0.1')
-
-    plt.suptitle('Hamming - Mensajes:' + str(len(mensaje)))
-    plt.show()
-
-    # Guardar la grafica
-    nombre = "hamming_" + str(len(mensaje)) + ".jpg"
-    plt.savefig(nombre)
-
-
-
-        
+                    # Gráfica de CRC32
+                    crc32_counts = [clean_counts_crc32, error_counts_crc32, corrected_counts_crc32]
+                    plt.bar(x, crc32_counts, align='center')
+                    plt.xlabel('Result Type')
+                    plt.ylabel('Count')
+                    plt.title('CRC32 con probabilida de ' + str(probabilidad) +  ' y largo de cadena '  +str(len(mensaje)))
+                    plt.xticks(x, labels)
+                    plt.savefig('crc32_' + str(probabilidad) + "_"  +str(len(mensaje)) +'.png')
+                    plt.clf()

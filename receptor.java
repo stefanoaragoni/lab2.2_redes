@@ -22,25 +22,24 @@ public class receptor {
         }
 
 
-        Set<String> receivedData = capaTransmision.main();
+        String receivedData = capaTransmision.main();
 
-        for (String data : receivedData) {
-            ArrayList<String> arrayEnlace = capaEnlace.main(data, metodo);
-            
-            ArrayList<String> arrayPresentacion = capaPresentacion.main(arrayEnlace);
+        ArrayList<String> arrayEnlace = capaEnlace.main(receivedData, metodo);
+        
+        ArrayList<String> arrayPresentacion = capaPresentacion.main(arrayEnlace);
 
-            capaAplicacion.main(arrayPresentacion);
-        }
+        capaAplicacion.main(arrayPresentacion);
+        
         
     }
 }
 
-class capaTransmision{
+class capaTransmision {
 
-    public static Set<String> main() {
+    public static String main() {
         int port = 8080;
 
-        Set<String> receivedData = new HashSet<>();
+        String receivedData = null;
 
         try (ServerSocket serverSocket = new ServerSocket(port)) {
             System.out.println("Esperando conexiones entrantes...");
@@ -52,9 +51,8 @@ class capaTransmision{
                 byte[] buffer = new byte[1024];
 
                 int bytesRead;
-                while ((bytesRead = inputStream.read(buffer)) != -1) {
-                    String data = new String(buffer, 0, bytesRead);
-                    receivedData.add(data);
+                if ((bytesRead = inputStream.read(buffer)) != -1) {
+                    receivedData = new String(buffer, 0, bytesRead);
                 }
             }
 
@@ -62,15 +60,15 @@ class capaTransmision{
             e.printStackTrace();
         }
 
-        System.out.println("\nDatos unicos recibidos:");
-        for (String data : receivedData) {
-            System.out.println(data);
-        }
-
+        System.out.println("\nDato recibido: " + receivedData);
         return receivedData;
     }
 
+    public static void main(String[] args) {
+        main();
+    }
 }
+
 
 class capaEnlace{
 
@@ -153,6 +151,7 @@ class capaAplicacion {
         String metodo = data.get(2);
         
         StringBuilder logMessage = new StringBuilder();
+
 
         if (metodo.equals("hamming")) {
             logMessage.append("\n---------------\nMetodo de correccion de errores: Hamming");
