@@ -1,12 +1,13 @@
 # Laboratorio 2 - Redes - UVG
-
-Generación de Esquemas de detección y corrección de errores con Código de Hamming y CRC-3.
+Aplicación para la comunicación bidireccional de mensajes, implementando una arquitectura de capas con diversos servicios. La transmisión de datos se realiza mediante los robustos esquemas de detección y corrección de errores de Código de Hamming y CRC-3.
 
 
 ## Comenzando 🚀
 
 git remote add origin https://github.com/20Candy/lab2_redes.git
 
+- Para ejecutar una prueba a la vez, ejecutar receptor.java en una terminar y emisor.py en otra para poder simular una comunicación simultanea. 
+- Para ejecutar pruebas automatizadas, ejecutar pruebas.py e ingresar eln  número de iteraciones. Esto generada graficas tipo png con los resultados correspondientes. 
 
 ## Construido con 🛠️
 - Python
