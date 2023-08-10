@@ -117,7 +117,7 @@ def main():
 
     # if argv is not None:
 
-    if len(sys.argv) >0:
+    if len(sys.argv) > 3:
         mensaje = sys.argv[1]
         metodo = int(sys.argv[2])
         probabilidad = float(sys.argv[3])
