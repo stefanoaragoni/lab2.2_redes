@@ -6,8 +6,9 @@ Aplicación para la comunicación bidireccional de mensajes, implementando una a
 
 git remote add origin https://github.com/20Candy/lab2_redes.git
 
-- Para ejecutar una prueba a la vez, ejecutar receptor.java en una terminar y emisor.py en otra para poder simular una comunicación simultanea. 
-- Para ejecutar pruebas automatizadas, ejecutar pruebas.py e ingresar eln  número de iteraciones. Esto generada graficas tipo png con los resultados correspondientes. 
+- Para ejecutar una prueba a la vez, compilar y ejecutar receptor.java en una terminal y ejecutar emisor.py en otra. Esto permite poder simular una comunicación simultanea. PRIMERO SE DEBE COMPULAR Y EJECUTAR RECEPTOR.JAVA. 
+
+- Para ejecutar pruebas automatizadas, ejecutar pruebas.py e ingresar el  número de iteraciones. Esto generada graficas tipo png con los resultados correspondientes. 
 
 ## Construido con 🛠️
 - Python

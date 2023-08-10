@@ -51,12 +51,14 @@ if __name__ == "__main__":
 
                     receptor_process = multiprocessing.Process(target=run_receptor, args=(metodo,))
                     receptor_process.start()
+                    time.sleep(2)
                     
                     emisor_process = multiprocessing.Process(target=run_emisor, args=(mensaje, metodo, probabilidad))
                     emisor_process.start()
 
-                    emisor_process.join()
                     receptor_process.join()
+                    emisor_process.join()
+                    time.sleep(1)
                     
 
                 # Read and analyze the output files
